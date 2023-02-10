@@ -114,6 +114,7 @@
   </head>
 
   <body>
+    
     <style type="text/css">
       .display-none {
         display: none;
@@ -167,6 +168,7 @@
        aria-haspopup="true" aria-expanded="false">
       Giới Thiệu
     </a>
+  
     <ul class="dropdown-menu">
       <li><a href="/gioi-thieu/bo-sgk-tieng-anh-global-success">BỘ SGK TIẾNG ANH GLOBAL SUCCESS</a></li>
       <li><a target="_blank" href="https://phuongnam.edu.vn/friend2">FAMILY AND FRIENDS NATIONAL EDITION</a></li>
@@ -715,13 +717,16 @@
 
           <p ng-if="recent_books.length > 0"
              class="panel-title mouse-pointer block-select padding-bottom-10px"
-             style="color: #5B5B5B;font-weight: 600;font-size: 20px;line-height: 25px;margin-bottom: 16px;">
+             style="color: #5B5B5B;font-weight: 600;font-size: 20px;line-height: 25px;margin-bottom: 16px;" hidden="true">
             Sách Mềm sử dụng gần đây</p>
-          <div class="box-container box-row-wrap box-start padding-sides-15px-mobile margin-bottom-10px">
-            <div class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around" ng-repeat="book in all_books" ng-if="indexOfx(recent_books, book.id)">
+            <div>
+            
+          <div class="box-container box-row-wrap box-start padding-sides-15px-mobile margin-bottom-10px"  >
+            <input class="form-control " ng-model='searchString' placeholder="Search a name..." />
+            <div class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around" ng-repeat="book in all_books |filter :{name : searchString}" ng-if="indexOfx(recent_books, book.id)">
               <div class="box-xs-90 box-sm-73 box-md-55">
 
-                <a ng-if="book.link_id  == undefined" href="/books/{{book.id}}/units" title="{{book.name}}">
+                <a ng-if="book.link_id  == undefined && searchString !=''" href="/books/{{book.id}}/units" title="{{book.name}}">
                   <img ng-src="https://cdn.sachmem.vn/public//bookcovers2/{{book.code}}-teacher.jpg"
                        class="click-one bookcover">
 
@@ -731,7 +736,7 @@
                 </a>
               </div>
             </div>
-          </div>
+          </div></div>
 
           <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
           <div class="box-container box-row-wrap">
@@ -947,6 +952,12 @@
         $scope.all_books = $scope.all_books.concat(book_json.books[i].tk);
       }
 
+      $scope.searchString ="";
+      console.log($scope.all_books);
+      
+      
+      
+      
       // $scope.all_books.push({"name":"My Little Fun 1","id":"288","code":"TAMN1SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 2","id":"289","code":"TAMN2SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 3","id":"290","code":"TAMN3SHS","sj":"Tiếng Anh"});
@@ -1147,6 +1158,11 @@
     $(".grade-option").removeClass("active");
     $(this).addClass("active");
   });
+
+    //find the books with id
+    
+
+
 </script>
 
 <style type="text/css">
