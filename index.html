@@ -169,28 +169,9 @@
       Giới Thiệu
     </a>
   
-    <ul class="dropdown-menu">
-      <li><a href="/gioi-thieu/bo-sgk-tieng-anh-global-success">BỘ SGK TIẾNG ANH GLOBAL SUCCESS</a></li>
-      <li><a target="_blank" href="https://phuongnam.edu.vn/friend2">FAMILY AND FRIENDS NATIONAL EDITION</a></li>
-      <li><a target="_blank" href="https://tienganh3s.vn/">BỘ TIẾNG ANH TĂNG CƯỜNG 3S</a></li>
-    </ul>
+    
   </li>
-  <li class="selected"><a href="/home"> Sách của tôi</a></li>
-  <li class="dropdown">
-    <a href="" class="text-header" data-toggle="dropdown" role="button"
-       aria-haspopup="true" aria-expanded="false">
-      Sản phẩm
-    </a>
-    <ul class="dropdown-menu">
-      <li><a href="/sach/mam-non">Mầm non</a></li>
-      <li><a href="/sach/tieu-hoc">Tiểu học</a></li>
-      <li><a href="/sach/thcs">Trung học cơ sở</a></li>
-      <li><a href="/sach/thpt">Trung học phổ thông</a></li>
-      <li><a href="/trial">Sách Mềm học sinh</a></li>
-      <li><a href="/trial?type=teacher">Sách Mềm giáo viên</a></li>
-      <li><a target="_blank" href="https://lingobee.vn/">Ứng dụng LingoBee</a></li>
-    </ul>
-  </li>
+  
 
   <li class="dropdown">
     <a href="" class="text-header" data-toggle="dropdown" role="button"
@@ -529,9 +510,9 @@
       return scrollNotices($(this));
     });
   });
- //get api 
+
  
-//use http instead of $http find in all_books element book with id
+
 
 
   if($("[ng-app]").length > 1)
@@ -675,16 +656,6 @@
 
       <div class="box-xs-100" id="book_app">
         <div ng-app="BooksApp" ng-controller="BookController" ng-cloak id="book_list">
-
-          <p class="panel-title mouse-pointer block-select padding-bottom-10px"
-             style="color: #5B5B5B;font-weight: 600;font-size: 20px;line-height: 25px;">
-            Sách Mềm Offline
-          </p>
-
-          <div ng-if="book_offline.length == 0" style="background: #f0f0f0;padding: 15px;border-radius: 8px;margin-bottom: 16px;">
-            Bạn chưa có sách ngoại tuyến! <a href="https://docs.google.com/document/d/1_Hl12gv31G6WdSxmsHyokRiuXfFnz7ahKvgCM-gja9Y/edit" target="_blank">Xem hướng dẫn.</a>
-          </div>
-
           <div class="box-container box-row-wrap box-start padding-sides-15px-mobile margin-bottom-10px">
             <div ng-repeat="book in book_offline" class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around">
               <div class="box-xs-90 box-sm-73 box-md-55" style="position: relative;">
@@ -723,34 +694,26 @@
                 </a> -->
               </div>
             </div>
-          </div>
-
-          <p ng-if="recent_books.length > 0"
+          </div>        
+          <p ng-if="all_books2.length > 0"
              class="panel-title mouse-pointer block-select padding-bottom-10px"
-             style="color: #5B5B5B;font-weight: 600;font-size: 20px;line-height: 25px;margin-bottom: 16px;" hidden="true">
+             style="color: #5B5B5B;font-weight: 600;font-size: 20px;line-height: 25px;margin-bottom: 16px;" >
             Sách Mềm sử dụng gần đây</p>
-            <div>
-            
-          <div class="box-container box-row-wrap box-start padding-sides-15px-mobile margin-bottom-10px"  >
-       
-          <!-- <input class="form-control col-2 " ng-model='searchString' placeholder="Search a name..." /> -->
-        
-       
-            <div class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around" ng-repeat="book in all_books" ng-if="all_books.length <=1">
+            <div>       
+          <div class="box-container box-row-wrap box-start padding-sides-15px-mobile margin-bottom-10px"  >       
+            <div class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around"  >
               <div class="box-xs-90 box-sm-73 box-md-55">
-
-                <a ng-if="book.link_id  == undefined" href="/books/{{book.id}}/units" title="{{book.name}}">
-                  <img ng-src="https://cdn.sachmem.vn/public//bookcovers2/{{book.code}}-teacher.jpg"
+            
+                <a  href="/books/{{book.id}}/units" title="{{get_book_data(result).name}}">
+                  <img ng-src="https://cdn.sachmem.vn/public//bookcovers2/{{get_book_data(result).code}}-teacher.jpg"
                        class="click-one bookcover">
-
                   <p class="module-x">
-                    <span class="book-name">{{book.name}}</span>
+                    <span class="book-name">{{get_book_data(result).name}} </span>
                   </p>
                 </a>
               </div>
             </div>
           </div></div>
-
           <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
           <div class="box-container box-row-wrap">
             <div class="panel-title block-select"
@@ -952,38 +915,19 @@
       }
     }
     
-
-
     var app = angular.module("BooksApp",['ngSanitize']);
     app.controller("BookController", function($scope, $http,$location) {
       $scope.bookGroups = book_json;
       $scope.all_books = [];
-     
+    
       for (var i = 0; i < book_json.books.length; i++ ) {
         $scope.all_books = $scope.all_books.concat(book_json.books[i].mois);
         $scope.all_books = $scope.all_books.concat(book_json.books[i].ten_years);
         $scope.all_books = $scope.all_books.concat(book_json.books[i].eps);
         $scope.all_books = $scope.all_books.concat(book_json.books[i].tk);
       }
-
-      console.log($scope.all_books);
-
-      const id = parseInt($location.search().id);
-  $http.get("/?id=" + id).then(function(response) {
-    for (var i = 0; i < $scope.all_books.length; i++) {
-      if ($scope.all_books[i].id == id) {
-        console.log($scope.all_books[i]);
-        $scope.all_books = $scope.all_books[i];
-        console.log($scope.all_books);
-      }
-    }
-  });
-      
-      
-
- 
     
-      // $scope.all_books.push({"name":"My Little Fun 1","id":"288","code":"TAMN1SHS","sj":"Tiếng Anh"});
+    // $scope.all_books.push({"name":"My Little Fun 1","id":"288","code":"TAMN1SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 2","id":"289","code":"TAMN2SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 3","id":"290","code":"TAMN3SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"Tiếng Anh 3 - Global Success","id":"291","code":"TA3GSSHS","sj":"Tiếng Anh"});
@@ -992,7 +936,7 @@
 
       $scope.user_role = "teacher";
       $scope.recent_books = [24, 4, 325, 291];
-
+      
       $scope.group_name = {"mois": "Tiếng Anh theo CT GDPT mới",
                            "ten_years": "Tiếng Anh thí điểm hệ 10 năm",
                            "eps": "Bộ sách Smiles",
@@ -1011,6 +955,25 @@
           groups.push("tk");
 
         return groups;
+      }
+      function get_query(){
+    var url = document.location.href;
+    var qs = url.substring(url.indexOf('?') + 1).split('&');
+    for(var i = 0, result = {}; i < qs.length; i++){
+        qs[i] = qs[i].split('=');
+        result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+    }
+    return parseInt(result ? result['id'] : null  );
+}
+
+$scope.result = get_query();
+
+     $scope.get_book_data = function(id) {
+        for (var i = 0; i < $scope.all_books.length; i++) {
+          if ($scope.all_books[i].id == id) {
+            return $scope.all_books[i];
+          }
+        }
       }
 
       $scope.activeGrade = function (inx, typee, grade, isBook) {
@@ -1084,8 +1047,10 @@
                 }
               }
             }
+            
 
             $scope.book_offline = book_offline;
+            
             if ($scope.book_offline.length > 0) {
               $scope.active_tag_group_vertical = false;
               $(window).resize(function() {
@@ -1125,9 +1090,11 @@
                 });
               }
               $scope.book_offline[t].list_units = temp_units;
+          
             }
             $scope.$applyAsync();
           })
+        
           // end
 
           for (var i = 0; i < book_json.books.length; i++) {
@@ -1150,7 +1117,6 @@
         });
       }
     })
-    // console.log(all_books);
     if($("[ng-app]").length > 1)
       angular.bootstrap(document.getElementById("book_list"), ["BooksApp"]);
   })
