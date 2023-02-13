@@ -421,6 +421,7 @@
       subcomment: null
     };
 
+    
     $scope.add_headers = function() {
       $http.defaults.headers.common["Authorization"] = window.localStorage.getItem('sm:comment');
     }
@@ -434,6 +435,8 @@
     //     $scope.loadNotice();
     //   }
     // });
+
+
 
     $scope.enoughDatasSend = function() {
         if (parseInt($scope.last_id.notice) < 1) return false;
@@ -466,6 +469,9 @@
         checkRenderAndSetScrollBar(notices_length, $("ul.notice-box").scrollTop());
       });
     }
+
+
+
 
     $scope.seen = function(notice) {
       if(!notice.notice.seen && notice.type == "normal") {
@@ -523,6 +529,10 @@
       return scrollNotices($(this));
     });
   });
+ //get api 
+ 
+//use http instead of $http find in all_books element book with id
+
 
   if($("[ng-app]").length > 1)
     angular.bootstrap(document.getElementById("notice_app"), ["notice"]);
@@ -722,11 +732,14 @@
             <div>
             
           <div class="box-container box-row-wrap box-start padding-sides-15px-mobile margin-bottom-10px"  >
-            <input class="form-control " ng-model='searchString' placeholder="Search a name..." />
-            <div class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around" ng-repeat="book in all_books |filter :{name : searchString}" ng-if="indexOfx(recent_books, book.id)">
+       
+          <!-- <input class="form-control col-2 " ng-model='searchString' placeholder="Search a name..." /> -->
+        
+       
+            <div class="box-xs-50 box-sm-33 box-md-25 margin-top-bottom-10px box-container box-space-around" ng-repeat="book in all_books" ng-if="all_books.length <=1">
               <div class="box-xs-90 box-sm-73 box-md-55">
 
-                <a ng-if="book.link_id  == undefined && searchString !=''" href="/books/{{book.id}}/units" title="{{book.name}}">
+                <a ng-if="book.link_id  == undefined" href="/books/{{book.id}}/units" title="{{book.name}}">
                   <img ng-src="https://cdn.sachmem.vn/public//bookcovers2/{{book.code}}-teacher.jpg"
                        class="click-one bookcover">
 
@@ -940,7 +953,7 @@
     }
 
     var app = angular.module("BooksApp", ["ngSanitize"]);
-    app.controller("BookController", function($scope) {
+    app.controller("BookController", function($scope,$http) {
       $scope.bookGroups = book_json;
 
       $scope.all_books = [];
@@ -954,6 +967,33 @@
 
       $scope.searchString ="";
       console.log($scope.all_books);
+      $scope.searchBook = function() {
+        var searchResult = [];
+        for (var i = 0; i < $scope.all_books.length; i++) {
+          if ($scope.all_books[i].name.toLowerCase().indexOf($scope.searchString.toLowerCase()) != -1) {
+            searchResult.push($scope.all_books[i]);
+          }
+        }
+        $scope.all_books = searchResult;
+      }
+
+
+       for (var i = 0; i < $scope.all_books.length; i++) {
+        if ($scope.all_books[i].id == 291) {
+          console.log($scope.all_books[i]);
+        }
+      }
+  
+      
+
+      //find book by id in all_books array with $http request
+      
+
+      
+     
+  
+
+
       
       
       
@@ -1125,6 +1165,7 @@
         });
       }
     })
+    // console.log(all_books);
     if($("[ng-app]").length > 1)
       angular.bootstrap(document.getElementById("book_list"), ["BooksApp"]);
   })
@@ -1161,7 +1202,13 @@
 
     //find the books with id
     
+app.config(function ($routeProvider) {
+  $routeProvider
+  .when("/:id", {
+    templateUrl : "home.html"
+  })
 
+});
 
 </script>
 
