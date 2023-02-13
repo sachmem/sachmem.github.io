@@ -952,10 +952,9 @@
       }
     }
 
-    var app = angular.module("BooksApp", ["ngSanitize"]);
-    app.controller("BookController", function($scope,$http) {
+    var app = angular.module("BooksApp",['ngSanitize']);
+    app.controller("BookController", function($scope, $http) {
       $scope.bookGroups = book_json;
-      // this.strId = $routeParams.id;
       $scope.all_books = [];
 
       for (var i = 0; i < book_json.books.length; i++ ) {
@@ -966,48 +965,23 @@
       }
 
       $scope.searchString ="";
-      // $scope.all_books = "";
       console.log($scope.all_books);
-
-     
-
 
        for (var i = 0; i < $scope.all_books.length; i++) {
         if ($scope.all_books[i].id == 291) {
           console.log($scope.all_books[i]);
         }
       }
-      
-      // $http.get("/books/"+id).then(function(response) {
-      //   // console.log($scope.all_books);
-      //   for (var i = 0; i < all_books.length; i++) {
-      //     if (all_books[i].id == id) {
-      //       console.log(all_books[i]);
-      //     }
-      //   }
-      // });
-
-      app.config(function($routeProvider){
-        $httpProvider.when('/books/:id', {
-          templateUrl: 'book.html',
-          controller: 'BookController',
-          data: $scope.all_books
-        })
-      })
-      
-
-   
-      
-
-      
-     
-  
-
-
-      
-      
-      
-      
+     var id ;
+      $http.get("/?id="+id).then(function(response) {
+        // var books = response.data.books;
+        for (var i = 0; i < $scope.all_books.length; i++) {
+          if ($scope.all_books[i].id == id) {
+            console.log($scope.all_books[i]);
+          }
+        }
+      });
+    
       // $scope.all_books.push({"name":"My Little Fun 1","id":"288","code":"TAMN1SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 2","id":"289","code":"TAMN2SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 3","id":"290","code":"TAMN3SHS","sj":"Tiếng Anh"});
