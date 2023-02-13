@@ -967,15 +967,8 @@
 
       $scope.searchString ="";
       console.log($scope.all_books);
-      $scope.searchBook = function() {
-        var searchResult = [];
-        for (var i = 0; i < $scope.all_books.length; i++) {
-          if ($scope.all_books[i].name.toLowerCase().indexOf($scope.searchString.toLowerCase()) != -1) {
-            searchResult.push($scope.all_books[i]);
-          }
-        }
-        $scope.all_books = searchResult;
-      }
+
+     
 
 
        for (var i = 0; i < $scope.all_books.length; i++) {
@@ -983,7 +976,15 @@
           console.log($scope.all_books[i]);
         }
       }
-  
+      
+      $http.get("/books/"+id).then(function(response) {
+        console.log(response.data);
+        for (var i = 0; i < response.data.length; i++) {
+          if (response.data[i].id == id) {
+            console.log(response.data[i]);
+          }
+        }
+      });
       
 
       //find book by id in all_books array with $http request
@@ -1202,13 +1203,8 @@
 
     //find the books with id
     
-app.config(function ($routeProvider) {
-  $routeProvider
-  .when("/:id", {
-    templateUrl : "home.html"
-  })
 
-});
+
 
 </script>
 
