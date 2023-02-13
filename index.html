@@ -955,7 +955,7 @@
     var app = angular.module("BooksApp", ["ngSanitize"]);
     app.controller("BookController", function($scope,$http) {
       $scope.bookGroups = book_json;
-
+      // this.strId = $routeParams.id;
       $scope.all_books = [];
 
       for (var i = 0; i < book_json.books.length; i++ ) {
@@ -966,6 +966,7 @@
       }
 
       $scope.searchString ="";
+      // $scope.all_books = "";
       console.log($scope.all_books);
 
      
@@ -977,17 +978,25 @@
         }
       }
       
-      $http.get("/books/"+id).then(function(response) {
-        console.log(response.data);
-        for (var i = 0; i < response.data.length; i++) {
-          if (response.data[i].id == id) {
-            console.log(response.data[i]);
-          }
-        }
-      });
+      // $http.get("/books/"+id).then(function(response) {
+      //   // console.log($scope.all_books);
+      //   for (var i = 0; i < all_books.length; i++) {
+      //     if (all_books[i].id == id) {
+      //       console.log(all_books[i]);
+      //     }
+      //   }
+      // });
+
+      app.config(function($routeProvider){
+        $httpProvider.when('/books/:id', {
+          templateUrl: 'book.html',
+          controller: 'BookController',
+          data: $scope.all_books
+        })
+      })
       
 
-      //find book by id in all_books array with $http request
+   
       
 
       
