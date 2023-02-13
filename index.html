@@ -951,12 +951,14 @@
         book_json.books.splice(i, 1);
       }
     }
+    
+
 
     var app = angular.module("BooksApp",['ngSanitize']);
-    app.controller("BookController", function($scope, $http) {
+    app.controller("BookController", function($scope, $http,$location) {
       $scope.bookGroups = book_json;
       $scope.all_books = [];
-
+     
       for (var i = 0; i < book_json.books.length; i++ ) {
         $scope.all_books = $scope.all_books.concat(book_json.books[i].mois);
         $scope.all_books = $scope.all_books.concat(book_json.books[i].ten_years);
@@ -964,23 +966,22 @@
         $scope.all_books = $scope.all_books.concat(book_json.books[i].tk);
       }
 
-      $scope.searchString ="";
       console.log($scope.all_books);
 
-       for (var i = 0; i < $scope.all_books.length; i++) {
-        if ($scope.all_books[i].id == 291) {
-          console.log($scope.all_books[i]);
-        }
+      const id = parseInt($location.search().id);
+  $http.get("/?id=" + id).then(function(response) {
+    for (var i = 0; i < $scope.all_books.length; i++) {
+      if ($scope.all_books[i].id == id) {
+        console.log($scope.all_books[i]);
+        $scope.all_books = $scope.all_books[i];
+        console.log($scope.all_books);
       }
-     var id ;
-      $http.get("/?id="+id).then(function(response) {
-        // var books = response.data.books;
-        for (var i = 0; i < $scope.all_books.length; i++) {
-          if ($scope.all_books[i].id == id) {
-            console.log($scope.all_books[i]);
-          }
-        }
-      });
+    }
+  });
+      
+      
+
+ 
     
       // $scope.all_books.push({"name":"My Little Fun 1","id":"288","code":"TAMN1SHS","sj":"Tiếng Anh"});
       // $scope.all_books.push({"name":"My Little Fun 2","id":"289","code":"TAMN2SHS","sj":"Tiếng Anh"});
