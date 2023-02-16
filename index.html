@@ -742,23 +742,18 @@
     }
     
     var app = angular.module("BooksApp",['ngSanitize']);
-    app.controller("BookController", function($scope, $http,$location) {
-      /// de chay offline voi custom schema
-angular.element(document).ready(function () {
-  var element = angular.element(document.querySelector('[ng-app="BooksApp"]'));
-  var isInitialized = element.injector();
-  if (!isInitialized) {
-    angular.bootstrap(element, ["BooksApp"]);
-  }
-});
-app.config([
-  '$compileProvider',
-  function($compileProvider)
-  {
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|sachmem(\-\d+){0,1}|ftp|mailto|chrome-extension):/);
-    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|sachmem(\-\d+){0,1}|ftp|file|blob):|data:image\//);
-  }
-]);
+
+    app.config([
+      '$compileProvider',
+      function($compileProvider)
+      {
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|sachmem(\-\d+){0,1}|ftp|mailto|chrome-extension):/);
+        $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|sachmem(\-\d+){0,1}|ftp|file|blob):|data:image\//);
+      }
+    ]);
+
+    app.controller("BookController", function($scope, $http, $location) {
+ 
       $scope.bookGroups = book_json;
       $scope.all_books = [];
     
@@ -792,16 +787,16 @@ app.config([
         return groups;
       }
       function get_query(){
-    var url = document.location.href;
-    var qs = url.substring(url.indexOf('?') + 1).split('&');
-    for(var i = 0, result = {}; i < qs.length; i++){
-        qs[i] = qs[i].split('=');
-        result[qs[i][0]] = decodeURIComponent(qs[i][1]);
-    }
-    return parseInt(result ? result['id'] : null  );
-}
+        var url = document.location.href;
+        var qs = url.substring(url.indexOf('?') + 1).split('&');
+        for(var i = 0, result = {}; i < qs.length; i++){
+            qs[i] = qs[i].split('=');
+            result[qs[i][0]] = decodeURIComponent(qs[i][1]);
+        }
+        return parseInt(result ? result['id'] : null  );
+      }
 
-$scope.result = get_query();
+      $scope.result = get_query();
 
      $scope.get_book_data = function(id) {
         for (var i = 0; i < $scope.all_books.length; i++) {
@@ -948,8 +943,14 @@ $scope.result = get_query();
         });
       }
     })
-    if($("[ng-app]").length > 1)
-      angular.bootstrap(document.getElementById("book_list"), ["BooksApp"]);
+
+    angular.element(document).ready(function () {
+      var element = angular.element(document.getElementById("book_list"));
+      var isInitialized = element.injector();
+      if (!isInitialized) {
+        angular.bootstrap(element, ["BooksApp"]);
+      }
+    });
   })
 
   $(window).load(function() {
