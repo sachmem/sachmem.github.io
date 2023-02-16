@@ -742,7 +742,8 @@
     }
     
     var app = angular.module("BooksApp",['ngSanitize']);
-/// de chay offline voi custom schema
+    app.controller("BookController", function($scope, $http,$location) {
+      /// de chay offline voi custom schema
 angular.element(document).ready(function () {
   var element = angular.element(document.querySelector('[ng-app="BooksApp"]'));
   var isInitialized = element.injector();
@@ -758,9 +759,6 @@ app.config([
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|sachmem(\-\d+){0,1}|ftp|file|blob):|data:image\//);
   }
 ]);
-
-    app.controller("BookController", function($scope, $http,$location) {
-      
       $scope.bookGroups = book_json;
       $scope.all_books = [];
     
