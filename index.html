@@ -742,6 +742,22 @@
     }
     
     var app = angular.module("BooksApp",['ngSanitize']);
+    /// de chay offline voi custom schema
+angular.element(document).ready(function () {
+  var element = angular.element(document.querySelector('[ng-app="BooksApp"]'));
+  var isInitialized = element.injector();
+  if (!isInitialized) {
+    angular.bootstrap(element, ["BooksApp"]);
+  }
+});
+app.config([
+  '$compileProvider',
+  function($compileProvider)
+  {
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|sachmem|ftp|mailto|chrome-extension):/);
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|sachmem|ftp|file|blob):|data:image\//);
+  }
+]);
     app.controller("BookController", function($scope, $http,$location) {
       $scope.bookGroups = book_json;
       $scope.all_books = [];
