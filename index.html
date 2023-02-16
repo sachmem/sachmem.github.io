@@ -741,8 +741,19 @@
       }
     }
     
-    var app = angular.module("BooksApp",['ngSanitize']);
+    
+    angular.element(document).ready(function () {
+      console.log(1)
+      var element = angular.element(document.getElementById("book_list"));
+      var isInitialized = element.injector();
+      if (!isInitialized) {
+        setTimeout(function(){
+          angular.bootstrap(element, ["BooksApp"]);
+        }, 0)
+      }
+    });
 
+    var app = angular.module("BooksApp",['ngSanitize']);
     app.config([
       '$compileProvider',
       function($compileProvider)
@@ -751,7 +762,6 @@
         $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|sachmem(\-\d+){0,1}|ftp|file|blob):|data:image\//);
       }
     ]);
-
     app.controller("BookController", function($scope, $http, $location) {
  
       $scope.bookGroups = book_json;
@@ -943,14 +953,6 @@
         });
       }
     })
-
-    angular.element(document).ready(function () {
-      var element = angular.element(document.getElementById("book_list"));
-      var isInitialized = element.injector();
-      if (!isInitialized) {
-        angular.bootstrap(element, ["BooksApp"]);
-      }
-    });
   })
 
   $(window).load(function() {
